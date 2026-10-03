@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { CippIcons } from '../../utils/icon-registry'
 import {
   Card,
   CardHeader,
@@ -13,7 +14,6 @@ import {
 import { PropertyList } from '../property-list'
 import { PropertyListItem } from '../property-list-item'
 import { getCippFormatting } from '../../utils/get-cipp-formatting'
-import { Check as CheckIcon, Close as CloseIcon, Sync } from '@mui/icons-material'
 import { LinearProgressWithLabel } from '../linearProgressWithLabel'
 import { Stack, Grid } from '@mui/system'
 
@@ -28,6 +28,19 @@ export const CippExchangeInfoCard = (props) => {
     { name: 'IMAP', enabled: exchangeData?.MailboxImapEnabled },
     { name: 'POP', enabled: exchangeData?.MailboxPopEnabled },
     { name: 'ActiveSync', enabled: exchangeData?.MailboxActiveSyncEnabled },
+    {
+      // SMTP client auth is inverted: true = disabled (secure), false = enabled (risk),
+      // null = unknown. Label spells out the state so a green chip isn't misread as "on".
+      name:
+        exchangeData?.SmtpClientAuthenticationDisabled == null
+          ? 'SMTP Unknown'
+          : exchangeData?.SmtpClientAuthenticationDisabled === false
+            ? 'SMTP Enabled'
+            : 'SMTP Disabled',
+      enabled: exchangeData?.SmtpClientAuthenticationDisabled === false,
+      unknown: exchangeData?.SmtpClientAuthenticationDisabled == null,
+      riskWhenEnabled: true,
+    },
   ]
 
   // Define mailbox hold types array
@@ -54,7 +67,7 @@ export const CippExchangeInfoCard = (props) => {
               <CircularProgress size={20} />
             ) : (
               <IconButton onClick={handleRefresh} size="small">
-                <Sync />
+                <CippIcons.Sync />
               </IconButton>
             )}
           </Stack>
@@ -75,7 +88,9 @@ export const CippExchangeInfoCard = (props) => {
             ) : (
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 4 }}>
-                  <Typography variant="inherit" color="text.primary" gutterBottom>
+                  <Typography variant="inherit" gutterBottom sx={{
+                    color: "text.primary"
+                  }}>
                     Mailbox Type:
                   </Typography>
                   <Typography variant="inherit">
@@ -83,7 +98,9 @@ export const CippExchangeInfoCard = (props) => {
                   </Typography>
                 </Grid>
                 <Grid size={{ xs: 12, md: 4 }}>
-                  <Typography variant="inherit" color="text.primary" gutterBottom>
+                  <Typography variant="inherit" gutterBottom sx={{
+                    color: "text.primary"
+                  }}>
                     Hidden from GAL:
                   </Typography>
                   <Typography variant="inherit">
@@ -94,7 +111,9 @@ export const CippExchangeInfoCard = (props) => {
                   </Typography>
                 </Grid>
                 <Grid size={{ xs: 12, md: 4 }}>
-                  <Typography variant="inherit" color="text.primary" gutterBottom>
+                  <Typography variant="inherit" gutterBottom sx={{
+                    color: "text.primary"
+                  }}>
                     Blocked For Spam:
                   </Typography>
                   <Typography variant="inherit">
@@ -102,7 +121,9 @@ export const CippExchangeInfoCard = (props) => {
                   </Typography>
                 </Grid>
                 <Grid size={{ xs: 12, md: 12 }}>
-                  <Typography variant="inherit" color="text.primary" gutterBottom>
+                  <Typography variant="inherit" gutterBottom sx={{
+                    color: "text.primary"
+                  }}>
                     Retention Policy:
                   </Typography>
                   <Typography variant="inherit">
@@ -193,7 +214,9 @@ export const CippExchangeInfoCard = (props) => {
                 return (
                   <Grid container spacing={2}>
                     <Grid size={{ xs: 12, md: 6 }}>
-                      <Typography variant="inherit" color="text.primary" gutterBottom>
+                      <Typography variant="inherit" gutterBottom sx={{
+                        color: "text.primary"
+                      }}>
                         Forwarding Status:
                       </Typography>
                       <Typography variant="inherit">
@@ -205,7 +228,9 @@ export const CippExchangeInfoCard = (props) => {
                     {forwardingType !== 'None' && (
                       <>
                         <Grid size={{ xs: 12, md: 6 }}>
-                          <Typography variant="inherit" color="text.primary" gutterBottom>
+                          <Typography variant="inherit" gutterBottom sx={{
+                            color: "text.primary"
+                          }}>
                             Keep Copy in Mailbox:
                           </Typography>
                           <Typography variant="inherit">
@@ -213,7 +238,9 @@ export const CippExchangeInfoCard = (props) => {
                           </Typography>
                         </Grid>
                         <Grid size={{ xs: 12, md: 12 }}>
-                          <Typography variant="inherit" color="text.primary" gutterBottom>
+                          <Typography variant="inherit" gutterBottom sx={{
+                            color: "text.primary"
+                          }}>
                             Forwarding Address:
                           </Typography>
                           <Typography variant="inherit">{cleanAddress}</Typography>
@@ -221,7 +248,7 @@ export const CippExchangeInfoCard = (props) => {
                       </>
                     )}
                   </Grid>
-                )
+                );
               })()
             )
           }
@@ -236,7 +263,9 @@ export const CippExchangeInfoCard = (props) => {
             ) : (
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
-                  <Typography variant="inherit" color="text.primary" gutterBottom>
+                  <Typography variant="inherit" gutterBottom sx={{
+                    color: "text.primary"
+                  }}>
                     Archive Mailbox Enabled:
                   </Typography>
                   <Typography variant="inherit">
@@ -246,7 +275,9 @@ export const CippExchangeInfoCard = (props) => {
                 {exchangeData?.ArchiveMailBox && (
                   <>
                     <Grid size={{ xs: 12, md: 6 }}>
-                      <Typography variant="inherit" color="text.primary" gutterBottom>
+                      <Typography variant="inherit" gutterBottom sx={{
+                        color: "text.primary"
+                      }}>
                         {exchangeData?.AutoExpandingArchiveScope === 'Organization'
                           ? 'Auto Expanding Archive: (org)'
                           : 'Auto Expanding Archive:'}
@@ -259,7 +290,9 @@ export const CippExchangeInfoCard = (props) => {
                       </Typography>
                     </Grid>
                     <Grid size={{ xs: 12, md: 6 }}>
-                      <Typography variant="inherit" color="text.primary" gutterBottom>
+                      <Typography variant="inherit" gutterBottom sx={{
+                        color: "text.primary"
+                      }}>
                         Total Archive Item Size:
                       </Typography>
                       <Typography variant="inherit">
@@ -269,7 +302,9 @@ export const CippExchangeInfoCard = (props) => {
                       </Typography>
                     </Grid>
                     <Grid size={{ xs: 12, md: 6 }}>
-                      <Typography variant="inherit" color="text.primary" gutterBottom>
+                      <Typography variant="inherit" gutterBottom sx={{
+                        color: "text.primary"
+                      }}>
                         Total Archive Item Count:
                       </Typography>
                       <Typography variant="inherit">
@@ -297,7 +332,7 @@ export const CippExchangeInfoCard = (props) => {
                   <Chip
                     key={hold.name}
                     label={hold.name}
-                    icon={hold.enabled ? <CheckIcon /> : <CloseIcon />}
+                    icon={hold.enabled ? <CippIcons.Check /> : <CippIcons.Close />}
                     color={hold.enabled ? 'success' : 'default'}
                     variant="outlined"
                     size="small"
@@ -316,24 +351,37 @@ export const CippExchangeInfoCard = (props) => {
               <Skeleton variant="text" width={200} />
             ) : (
               <div>
-                {protocols.map((protocol) => (
-                  <Chip
-                    key={protocol.name}
-                    label={protocol.name}
-                    icon={protocol.enabled ? <CheckIcon /> : <CloseIcon />}
-                    color={protocol.enabled ? 'success' : 'default'}
-                    variant="outlined"
-                    size="small"
-                    sx={{ mr: 1, mb: 1 }}
-                  />
-                ))}
+                {protocols.map((protocol) => {
+                  // For normal protocols, enabled = good (green). SMTP is inverted:
+                  // enabled = risk (red), disabled = good (green). Unknown stays neutral.
+                  const isGood = protocol.riskWhenEnabled ? !protocol.enabled : protocol.enabled
+                  return (
+                    <Chip
+                      key={protocol.name}
+                      label={protocol.name}
+                      icon={protocol.unknown ? undefined : isGood ? <CippIcons.Check /> : <CippIcons.Close />}
+                      color={
+                        protocol.unknown
+                          ? 'default'
+                          : isGood
+                            ? 'success'
+                            : protocol.riskWhenEnabled
+                              ? 'error'
+                              : 'default'
+                      }
+                      variant="outlined"
+                      size="small"
+                      sx={{ mr: 1, mb: 1 }}
+                    />
+                  )
+                })}
               </div>
             )
           }
         />
       </PropertyList>
     </Card>
-  )
+  );
 }
 
 CippExchangeInfoCard.propTypes = {
